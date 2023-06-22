@@ -1,13 +1,11 @@
 package com.example.demo1.controller;
 
-import antlr.Token;
 import com.example.demo1.dto.ResponseDTO;
 import com.example.demo1.dto.UserDTO;
 import com.example.demo1.model.UserEntity;
 import com.example.demo1.security.TokenProvider;
 import com.example.demo1.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,17 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/auth")
-
 public class UserController {
+
     @Autowired
     private UserService userService;
 
     @Autowired
     private TokenProvider tokenProvider;
-
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @PostMapping("/signup")
+    @PostMapping("signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
         try {
             UserEntity user = UserEntity.builder()
@@ -47,16 +44,14 @@ public class UserController {
 
             return ResponseEntity.ok().body(responseUserDTO);
         } catch (Exception e) {
-            ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-            return ResponseEntity
-                    .badRequest()
-                    .body(responseDTO);
+            ResponseDTO responseDTO = ResponseDTO.builder()
+                    .error(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseDTO);
         }
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticate
-            (@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
         UserEntity user = userService.getByCredentials(
                 userDTO.getEmail(),
                 userDTO.getPassword(),
@@ -75,8 +70,7 @@ public class UserController {
                     .error("Login failed.")
                     .build();
             return ResponseEntity
-                    .badRequest()
-                    .body(responseDTO);
+                    .badRequest().body(responseDTO);
         }
     }
 }

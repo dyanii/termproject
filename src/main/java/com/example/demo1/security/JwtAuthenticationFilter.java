@@ -21,6 +21,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     @Autowired
     private TokenProvider tokenProvider;
 
@@ -29,19 +30,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
         throws ServletException, IOException {
-        try {
+        try{
             String token = parseBearerToken(request);
             log.info("Filter is running...");
-            if (token != null && token.equalsIgnoreCase("null")) {
+            if (token != null && !token.equalsIgnoreCase("null")) {
                 String userId = tokenProvider.validateAndGetUserId(token);
-                log.info("Authenticated user ID: " + userId);
-
+                log.info("Authenticated user ID : " + userId);
                 AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userId,
                         null,
                         AuthorityUtils.NO_AUTHORITIES
                 );
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authentication.setDetails(new WebAuthenticationDetailsSource()
+                        .buildDetails(request));
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
                 securityContext.setAuthentication(authentication);
                 SecurityContextHolder.setContext(securityContext);

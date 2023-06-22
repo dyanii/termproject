@@ -47,7 +47,6 @@ public class TodoController {
     public ResponseEntity<?> retrieveTodo(
             @AuthenticationPrincipal String userId
     ) {
-        String temporaryUserId = "KimDaEun";
 
         List<TodoEntity> entities = service.retrieve(userId);
         List<TodoDTO> dtos = entities.stream().map(TodoDTO::new)
@@ -82,7 +81,6 @@ public class TodoController {
             @AuthenticationPrincipal String userId,
             @RequestBody TodoDTO dto) {
         try {
-            String temporaryUserId = "KimDaEun";
 
             TodoEntity entity = TodoDTO.toEntity(dto);
 

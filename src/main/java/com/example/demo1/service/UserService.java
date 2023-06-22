@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class UserService {
@@ -29,8 +31,9 @@ public class UserService {
     public UserEntity getByCredentials(final String email, final String password,
                                        final PasswordEncoder encoder) {
         final UserEntity originalUser = userRepository.findByEmail(email);
+
         if (originalUser != null && encoder.matches(password,
-                                        originalUser.getPassword())) {
+                                            originalUser.getPassword())) {
             return originalUser;
         }
         return null;

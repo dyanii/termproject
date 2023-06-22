@@ -14,7 +14,7 @@ import java.util.Date;
 @Slf4j
 @Service
 public class TokenProvider {
-    private static final String SECRET_KEY = "FDSFSGJIEGDFFdbs32425";
+    private static final String SECRET_KEY = "NMA8JPctFuna59f5";
 
     public String create(UserEntity userEntity) {
         Date expiryDate = Date.from(
